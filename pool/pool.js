@@ -125,6 +125,7 @@ Pool.prototype._pushConnectionIntoIdlePool = function(connection) {
 
 Pool.prototype.query = function(sql, values, callback) {
     debug('query, sql: %s', sql);
+    debug('query, values: %j', values);
     const self = this;
 
     if (arguments.length === 2) {
@@ -134,7 +135,7 @@ Pool.prototype.query = function(sql, values, callback) {
 
     self._getConnection((err, connection) => {
         if (err) return callback(err);
-        connection.query(sql, (err, records, fields) => {
+        connection.query(sql, values, (err, records, fields) => {
             if (err) debug(err.message);
 
             if (connection.destroyed) {
