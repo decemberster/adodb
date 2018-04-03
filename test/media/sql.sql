@@ -1,0 +1,1 @@
+SELECT "Ok" AS Ok;

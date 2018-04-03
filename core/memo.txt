@@ -1,0 +1,13 @@
+Error 3734
+
+https://support.microsoft.com/en-us/kb/274211
+Too many active users https://msdn.microsoft.com/en-us/library/bb178253(v=office.12).aspx
+
+Error: The database has been placed in a state by user 'admin' on machine 'ADMIN'
+that prevent it from being opened or locked
+
+https://social.msdn.microsoft.com/Forums/en-US/7a4ac312-c76d-4043-a1e6-6ce775b583ae/the-database-has-been-placed-in-a-state-by-user-admin-on-machine-admin-that-prevent-it-from?forum=accessdev
+"... the error message seems to be triggered, if your Access database is opened and closed repeatedly,
+which is not recommended. Is it possible to make your changes by accessing your database only once?
+The kb-article to your error message can be found at [1].
+   [1] http://support.microsoft.com/kb/274211/en-us

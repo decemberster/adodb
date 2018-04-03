@@ -1,0 +1,37 @@
+{
+  "name": "adodb",
+  "version": "0.0.1",
+  "description": "Package for executing SQL queries to MS Access databases intended for use on Windows XP and later. In the client-server mode, the client part can be used without restriction of the operating system.",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha",
+    "server": "node server/server.js",
+    "install-service": "node server/install.js",
+    "uninstall-service": "node server/uninstall.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/decemberster/adodb.git"
+  },
+  "keywords": [
+    "mdb",
+    "adodb",
+    "access"
+  ],
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/decemberster/adodb/issues"
+  },
+  "homepage": "https://github.com/decemberster/adodb#readme",
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "mocha": "^3.1.2"
+  },
+  "dependencies": {
+    "debug": "^3.1.0",
+    "iconv-lite": "^0.4.13",
+    "node-windows": "^0.1.14",
+    "sql-strip-comments": "0.0.23"
+  }
+}
