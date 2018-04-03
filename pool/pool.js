@@ -123,9 +123,29 @@ Pool.prototype._pushConnectionIntoIdlePool = function(connection) {
     }
 };
 
-Pool.prototype.query = function(sql, callback) {
+Pool.prototype.query = function(sql, values, callback) {
     debug('query, sql: %s', sql);
     const self = this;
+
+    //FIXME копипаста из Connection.prototype.query
+    if (arguments.length === 2) {
+        callback = values;
+        values = null;
+    }
+
+    if (sql.slice(-4).toLowerCase() === '.sql') {
+        sql = path.resolve(sql);
+        fs.readFile(sql,'utf8', (err, sqlText) => {
+            if (err) return callback(err);
+
+            self.query(sqlText, values, callback)
+        });
+        return;
+    }
+
+    sql = stripComments(sql);
+    sql = queryFormat(sql, values);
+    // Конец копипасты
 
     self._getConnection((err, connection) => {
         if (err) return callback(err);
