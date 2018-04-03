@@ -1,3 +1,4 @@
+'use strict';
 const path = require('path');
 
 let filePath = path.resolve(__dirname + '/../test/media/Northwind2003.mdb');
