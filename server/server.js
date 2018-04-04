@@ -82,3 +82,5 @@ server.listen(4023, () => {
     let address = server.address();
     console.log('opened server on %j', address);
 });
+
+//TODO установку серверка как тут: https://github.com/AndyGrom/node-deploy-server
