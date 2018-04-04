@@ -263,6 +263,8 @@ Connection.prototype.query = function (sql, values, callback) {
     sql = stripComments(sql);
     sql = queryFormat(sql, values);
 
+    debug('SQL: %s', sql);
+
     if (self._fEnding) {
         let err = new Error('Ending connection can not query');
         return callback(err);
