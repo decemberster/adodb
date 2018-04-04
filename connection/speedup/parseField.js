@@ -1,4 +1,6 @@
 'use strict';
+
+const debug = require('debug')('adodb:parseField');
 //
 // Data Type Enum
 // https://msdn.microsoft.com/ru-ru/library/ms675318(v=vs.85).aspx
@@ -47,11 +49,9 @@ const adLongVarBinary = 205; //Indicates a long binary value.
 
 
 function parseField(field, value, sDecimal, parseDateTime) {
+    debug('field: %j', field);
+
     let fReplaceDecimal = sDecimal !== '.';
-
-    // debug('parseField');
-    // console.log(field, value);
-
     let resValue;
 
     switch (field.Type) {
@@ -93,7 +93,7 @@ function parseField(field, value, sDecimal, parseDateTime) {
 
         // Boolean
         case adBoolean:
-            resValue = !!value;
+            resValue = !(value === '0');
             break;
 
         // Dates
