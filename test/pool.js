@@ -57,6 +57,8 @@ describe('Pool', function() {
         );
     });
 
+//TODO проверку запросов, возвращающих null
+
     it('Правильно выполняется SQL-запрос с datetime', function(done) {
         const Pool = require('../pool/pool');
         let pool = new Pool(connStr);
