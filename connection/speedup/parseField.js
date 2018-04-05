@@ -102,6 +102,8 @@ function parseField(field, value, sDecimal, parseDateTime) {
         case adDBTime:
         case adDBTimeStamp:
             resValue = parseDateTime(value);
+            //FIXME перенести проверку в parseDateFn
+            if (isNaN(resValue.getTime())) resValue = null;
             break;
 
         //Прочие
