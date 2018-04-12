@@ -11,7 +11,24 @@ const getProvider = require('../provider');
 
 const fs = require('fs');
 const path = require('path');
-const configFile = path.join(process.env['ADODB_PATH'] || process.cwd(), 'adodb-config.json');
+const intercept = require('intercept-stdout');
+
+const adodbPath = process.env['ADODB_PATH'] || process.cwd();
+const configFile = path.join(adodbPath, 'adodb-config.json');
+
+console.log('adodbPath: ' + adodbPath);
+
+const stdLog = fs.createWriteStream(path.join(adodbPath, 'stdout.log'));
+const errLog = fs.createWriteStream(path.join(adodbPath, 'stderr.log'));
+
+const unhook_intercept = intercept(
+    function(txt) {
+        stdLog.write(txt);
+    },
+    function(txt) {
+        errLog.write(txt);
+    }
+);
 
 console.log('config used:', configFile);
 
@@ -121,6 +138,7 @@ function startServer(options) {
         let address = server.address();
         console.log('opened server on %j', address);
     });
+
 }
 
 // TODO установку сервера как тут: https://github.com/AndyGrom/node-deploy-server
