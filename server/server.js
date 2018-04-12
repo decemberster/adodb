@@ -13,7 +13,7 @@ const fs = require('fs');
 const path = require('path');
 const configFile = path.join(process.env['ADODB_PATH'] || process.cwd(), 'adodb-config.json');
 
-debug(configFile);
+console.log('config used:', configFile);
 
 fs.readFile(configFile, (err, data) => {
     let options;
