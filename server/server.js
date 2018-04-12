@@ -11,7 +11,7 @@ const getProvider = require('../provider');
 
 const fs = require('fs');
 const path = require('path');
-const configFile = path.join(process.env['ADODB_PATH'] || process.cwd(), 'adodb-config.template.json');
+const configFile = path.join(process.env['ADODB_PATH'] || process.cwd(), 'adodb-config.json');
 
 debug(configFile);
 
