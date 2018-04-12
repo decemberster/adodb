@@ -61,7 +61,7 @@ function startServer(options) {
             let socketProvider = null;
             getProvider(
                 {
-                    connString: configServer.connString,
+                    connString: options.connString,
                     endString: config.endString,
                     errorString: config.errorString
                 },
