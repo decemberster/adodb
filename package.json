@@ -1,6 +1,6 @@
 {
   "name": "adodb",
-  "version": "0.0.12",
+  "version": "0.0.13",
   "description": "Package for executing SQL queries to MS Access databases intended for use on Windows XP and later. In the client-server mode, the client part can be used without restriction of the operating system.",
   "main": "index.js",
   "scripts": {
