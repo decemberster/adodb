@@ -1,13 +1,12 @@
 'use strict';
 
 const path = require('path');
-const mdbPath = path.resolve(__dirname + '/test/media/Northwind2003.mdb');
+const mdbPath = path.resolve(__dirname + '/test/media/Northwind2003.mdb').replace('/', '\\');
 const connStr = 'Provider=Microsoft.Jet.OLEDB.4.0;Data Source=' + mdbPath;
 
 const ADODB = require('./index');
 
 const pool = ADODB.createPool(connStr);
-
 
 pool.query('SELECT * FROM Categories;', (err, data) => {
     if (err) {
@@ -18,4 +17,3 @@ pool.query('SELECT * FROM Categories;', (err, data) => {
 
     pool.end();
 });
-
