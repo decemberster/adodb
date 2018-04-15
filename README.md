@@ -45,7 +45,29 @@ Microsoft.Jet.OLEDB.4.0. В случае использования пакета
 
 ### Обычный (файловый) режим
 
-TODO
+#### Установка
+    npm install adodb --save
+
+#### Использование
+```js
+const ADODB = require('adodb');
+
+const connStr = 'Provider=Microsoft.Jet.OLEDB.4.0;Data Source=Northwind2003.mdb'; 
+// if you have installed server connection string can be like this 
+// const connStr = 'Provider=Adodb-server;Host=127.0.0.1;Port=4023' 
+
+const pool = ADODB.createPool(connStr);
+
+pool.query('SELECT * FROM Categories;', (err, data) => {
+    if (err) {
+        console.error(err.message);
+    } else {
+        console.log(data);
+    }
+
+    pool.end();
+});
+```
 
 ### Клиент-серверный режим
 
@@ -95,5 +117,25 @@ TODO
     C:\adodb-config>adodb uninstall
 
 ##### Полный список команд
-
+    
     C:\adodb-config>adodb
+    
+#### Клиентская часть
+```js
+const ADODB = require('adodb');
+
+const connStr = 'Provider=Adodb-server;Host=127.0.0.1;Port=4023' 
+
+const pool = ADODB.createPool(connStr);
+
+pool.query('SELECT * FROM Categories;', (err, data) => {
+    if (err) {
+        console.error(err.message);
+    } else {
+        console.log(data);
+    }
+
+    pool.end();
+});
+```
+
