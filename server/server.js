@@ -13,10 +13,12 @@ const fs = require('fs');
 const path = require('path');
 const intercept = require('intercept-stdout');
 
-const adodbPath = process.env['ADODB_PATH'] || process.cwd();
-const configFile = path.join(adodbPath, 'adodb-config.json');
+let adodbPath = process.env['ADODB_PATH'];
+console.log('ADODB_PATH: ' + adodbPath);
 
-console.log('adodbPath: ' + adodbPath);
+if (!adodbPath) adodbPath = process.cwd();
+
+const configFile = path.join(adodbPath, 'adodb-config.json');
 
 const stdLog = fs.createWriteStream(path.join(adodbPath, 'stdout.log'));
 const errLog = fs.createWriteStream(path.join(adodbPath, 'stderr.log'));
@@ -30,7 +32,7 @@ const unhook_intercept = intercept(
     }
 );
 
-console.log('config used:', configFile);
+console.log('config file:', configFile);
 
 fs.readFile(configFile, (err, data) => {
     let options;
@@ -45,7 +47,7 @@ fs.readFile(configFile, (err, data) => {
             if (!options.connString) {
                 options.connString =
                     'Provider=Microsoft.Jet.OLEDB.4.0;Data Source=' +
-                    path.resolve(path.join(__dirname, '../test/media/Northwind2003.mdb'));
+                    path.resolve(path.join(__dirname, '../test/media/Northwind2003.mdb')).replace('/', '\\');
                 debug(options.connString);
             }
 
@@ -73,7 +75,7 @@ function startServer(options) {
 
             socketCount++;
 
-            socket.write('Adodb-server works!');
+            // socket.write('Adodb-server works!');
 
             let socketProvider = null;
             getProvider(
@@ -138,7 +140,6 @@ function startServer(options) {
         let address = server.address();
         console.log('opened server on %j', address);
     });
-
 }
 
 // TODO установку сервера как тут: https://github.com/AndyGrom/node-deploy-server
