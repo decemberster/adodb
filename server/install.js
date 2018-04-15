@@ -25,6 +25,8 @@ const svc = new Service({
 });
 
 log.info(env[1].name + '=' + env[1].value);
+console.log(env[1].name + '=' + env[1].value);
+console.log('directory: %s', svc.directory());
 
 svc.on('install', function() {
     console.log('service installed.');
