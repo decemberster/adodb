@@ -70,8 +70,39 @@ describe('Connection', function() {
 
                 try {
                     assert.deepEqual(data, [
-                        {falseValue: 0, floatValue: 3.14151926, intValue: 4, strValue: 'string', trueValue: -1}
+                        {floatValue: 3.14151926, intValue: 4, strValue: 'string', trueValue: -1, falseValue: 0}
                     ]);
+                } catch (err) {
+                    connection.end();
+                    return done(err);
+                }
+                connection.end();
+                done(null);
+            }
+        );
+    });
+
+    it('Правильно выполняется SQL-запрос с boolean', function(done) {
+        const Connection = require('../connection/connection');
+
+        let connection = new Connection(connStr);
+
+        connection.query(
+            'SELECT ProductID, Discontinued FROM Products WHERE ProductID IN (1, 5);',
+            (err, data, fields) => {
+                if (err) return done(err);
+
+                try {
+                    assert.deepEqual(fields, [
+                        {Name: 'ProductID', Type: 3, Precision: 10, NumericScale: 255},
+                        {
+                            Name: 'Discontinued',
+                            Type: 11,
+                            Precision: 255,
+                            NumericScale: 255
+                        }
+                    ]);
+                    assert.deepEqual(data, [{ProductID: 1, Discontinued: false}, {ProductID: 5, Discontinued: true}]);
                 } catch (err) {
                     connection.end();
                     return done(err);
@@ -99,6 +130,61 @@ describe('Connection', function() {
             connection.end();
             done(null);
         });
+    });
+
+    it('Правильно выполняется SQL-запрос с null', function(done) {
+        const Connection = require('../connection/connection');
+
+        let connection = new Connection(connStr);
+
+        connection.query(
+            // Если запрос возвращает значение логического выражения, то тип поля будет adSmallInt (2), а не adBoolean (11).
+            // Но если запрос возвращает значение логического поля, то тип поля будет adBoolean (11)
+            //
+            // Для числового поля в случае значения NULL возвращается значение 0.
+            // Для текстового поля в случае значения NULL возвращается пустая строка
+            //
+            // Типы полей: https://msdn.microsoft.com/ru-ru/library/ms675318(v=vs.85).aspx
+
+            'SELECT cr.CustomerID, cr.EmployeeID, ord.OrderID AS NumericNull, ord.OrderDate AS DateNull, ord.ShipName AS StringNull, IIF(ord.OrderID IS NULL, FALSE, TRUE) AS booleanValue FROM Orders ord RIGHT JOIN (SELECT CustomerID, EmployeeID FROM Customers, Employees) cr  ON (ord.CustomerID = cr.Customers.CustomerID AND ord.EmployeeID = cr.EmployeeID) WHERE cr.CustomerID="ALFKI" AND cr.EmployeeID IN (1, 2) ORDER BY cr.CustomerID, cr.EmployeeID;',
+            (err, data, fields) => {
+                if (err) return done(err);
+
+                try {
+                    assert.deepEqual(data, [
+                        {
+                            CustomerID: 'ALFKI',
+                            EmployeeID: 1,
+                            NumericNull: 10952,
+                            DateNull: new Date('1998-03-16 00:00:00'),
+                            StringNull: 'Alfreds Futterkiste',
+                            booleanValue: -1
+                        },
+                        {
+                            CustomerID: 'ALFKI',
+                            EmployeeID: 1,
+                            NumericNull: 10835,
+                            DateNull: new Date('1998-01-15 00:00:00'),
+                            StringNull: 'Alfreds Futterkiste',
+                            booleanValue: -1
+                        },
+                        {
+                            CustomerID: 'ALFKI',
+                            EmployeeID: 2,
+                            NumericNull: 0,
+                            DateNull: null,
+                            StringNull: '',
+                            booleanValue: 0
+                        }
+                    ]);
+                } catch (err) {
+                    connection.end();
+                    return done(err);
+                }
+                connection.end();
+                done(null);
+            }
+        );
     });
 
     it('Правильно обрабатываются синтаксические ошибки в SQL-запросе', function(done) {
