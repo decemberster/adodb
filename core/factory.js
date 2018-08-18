@@ -11,7 +11,7 @@ const queue = [];
 let lock = false;
 
 //milliseconds, workaround for https://support.microsoft.com/en-us/kb/274211
-// 2018-03-20: ссылка не работает, но можно найти в google kb274211
+// 2018-03-20: the url is invalid now, so google for kb274211
 let minCoreCreationInterval = config.minCoreCreationInterval;
 
 function getCore(connString, endString, callback) {
